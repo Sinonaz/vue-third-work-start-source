@@ -3,6 +3,7 @@ import AppDrop from "@/common/components/AppDrop.vue";
 import AppDrag from "@/common/components/AppDrag.vue";
 import TaskCardTags from "@/modules/tasks/components/TaskCardTags.vue";
 import { getImage } from "@/common/helpers";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   task: {
@@ -11,7 +12,11 @@ const props = defineProps({
   },
 });
 
-const { task } = props;
+const router = useRouter();
+
+const onTaskClick = () => {
+  router.push({ path: `/${props.task.id}` });
+};
 
 defineEmits(["drop"]);
 </script>
@@ -20,40 +25,43 @@ defineEmits(["drop"]);
   <!--    Компонент AppDrop отслеживает куда упала задача -->
   <app-drop @drop="$emit('drop', $event)">
     <!--      Компонент AppDrag определяет какая задача перемещается -->
-    <app-drag :transfer-data="task">
-      <div class="task">
+    <app-drag :transfer-data="props.task">
+      <div class="task" @click="onTaskClick">
         <!--        Этот блок показывает пользователя, который работает над задачей-->
-        <div v-if="task.user" class="task__user">
+        <div v-if="props.task.user" class="task__user">
           <div class="task__avatar">
             <img
-              :src="getImage(task.user.avatar)"
+              :src="getImage(props.task.user.avatar)"
               alt="Аватар пользователя"
               width="20"
               height="20"
             />
           </div>
-          {{ task.user.name }}
+          {{ props.task.user.name }}
         </div>
         <!--        Этот блок показывает статусы задачи-->
         <div class="task__statuses">
           <span
-            v-if="task.status"
+            v-if="props.task.status"
             class="task__status"
-            :class="`task__status--${task.status}`"
+            :class="`task__status--${props.task.status}`"
           />
           <span
-            v-if="task.timeStatus"
+            v-if="props.task.timeStatus"
             class="task__status"
-            :class="`task__status--${task.timeStatus}`"
+            :class="`task__status--${props.task.timeStatus}`"
           />
         </div>
-        <h5 class="task__title" :class="{ 'task__title--first': !task.user }">
-          {{ task.title }}
+        <h5
+          class="task__title"
+          :class="{ 'task__title--first': !props.task.user }"
+        >
+          {{ props.task.title }}
         </h5>
         <!--        Тэги задачи вынесены в отдельный компонент-->
         <task-card-tags
-          v-if="task.tags && task.tags.length"
-          :tags="task.tags"
+          v-if="props.task.tags && props.task.tags.length"
+          :tags="props.task.tags"
         />
       </div>
     </app-drag>

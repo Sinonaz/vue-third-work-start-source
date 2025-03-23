@@ -42,6 +42,7 @@ function deleteColumn(id) {
   <main class="content">
     <section class="desk">
       <!--      Шапка доски-->
+      <router-view :tasks="props.tasks" />
       <div class="desk__header">
         <h1 class="desk__title">Design Coffee Lab</h1>
         <!--        Добавили кнопку для добавления новой колонки-->
