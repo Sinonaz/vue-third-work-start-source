@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <button class="counter-button" @click="$emit('action')" :disabled="disabled">
+  <button class="counter-button" @click="$emit('action')"  :disabled="disabled">
     <slot/>
   </button>
 </template>
@@ -29,6 +29,11 @@ defineProps({
   &:hover,
   &:focus-visible{
     background: #ff0000;
+  }
+
+  &[disabled] {
+    background: #999;
+    cursor: not-allowed;
   }
 }
 
